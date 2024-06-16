@@ -22,3 +22,7 @@
 .main-img {
   object-fit: cover;
 }
+
+.file-input {
+  display: none;
+}
