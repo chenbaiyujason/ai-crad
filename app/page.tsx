@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import localFont from "next/font/local";
 import "./page.css";
 const myFont = localFont({ src: "./fusion-pixel.ttf" });
-
+import { ImageUpload } from "@/components/ui/ImageUpload";
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,7 +16,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isShowSnapshot, setIsShowSnapshot] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
-
+  const [referImage, setReferImage] = useState<string | undefined>(undefined)
+  const [referImageMode, setReferImageMode] = useState("")
+  const onUploadReferImage = (value: string) => {
+    setReferImage(value)
+  }
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({
@@ -181,6 +185,10 @@ export default function Home() {
           )}
         </div>
       </div>
+      <ImageUpload
+          value={referImage}
+          onChange={(newValue?: string) => onUploadReferImage(newValue || '')}
+      />
       {isResultShow ? (
         <div className="flex h-full w-full flex-col items-center justify-center z-20 mask absolute">
           <img src={resultImg} className="max-w-80 max-h-80"></img>
