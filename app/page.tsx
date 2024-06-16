@@ -90,6 +90,25 @@ export default function Home() {
     setIsShowSnapshot(true);
   };
 
+  function formatAndCenterTextHtml(input: string): string {
+    // 使用" - "分割字符串
+    const parts = input.split("-");
+    console.log(parts)
+    // 处理每个部分，将其包裹在<p>标签中
+    const centeredParts = parts.map((part,index) => {
+      if (index === 1) {
+        // 如果是数组中的第二项，执行这里的逻辑
+        return `<p class=rainbow-text>- "${part.trim()}" -</p>`;
+      } else {
+        // 对于其他项，执行通常的逻辑
+        return `<p class=rainbow-text2>${part.trim()}</p>`;
+      }
+    });
+
+    // 将处理后的部分用空字符串连接（因为每个部分已经在<p>标签中）
+    return centeredParts.join('');
+  }
+
   /** TODO: 填充服务器信息 */
   const fetchResult = () => {
     /*
@@ -132,7 +151,8 @@ export default function Home() {
 
         // TODO: 拿到结果并显示
         setResultImg(res.image_url);
-        setResultText(res.text);
+        const formattedHtml = formatAndCenterTextHtml(res.text);
+        setResultText(formattedHtml);
 
         setIsResultShow(true);
         setIsLoading(false);
@@ -261,9 +281,9 @@ export default function Home() {
       </div>
       {isResultShow ? (
         <div className="flex h-full w-full flex-col items-center justify-center z-20 mask absolute">
-          <img src={resultImg} className="max-w-80 max-h-80"></img>
-          <div className="text-white text-2xl pt-5 pb-10 break-all text-center px-8">
-            {resultText}
+          <img src={resultImg} className="max-w-80 max-h-80 success-img floating"></img>
+          <div className="text-white text-2xl pt-5 pb-10 break-all text-center px-8 success-text">
+            <div dangerouslySetInnerHTML={{__html: resultText}}/>
           </div>
           <button className="btn btn-blue inline-flex" onClick={reset}>
             下一张

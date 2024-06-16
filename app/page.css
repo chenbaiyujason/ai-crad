@@ -30,3 +30,49 @@
 .error-bg {
   @apply bg-red-400 text-white rounded-lg
 }
+
+.success-text {
+  color: rgb(251 146 60);
+}
+
+.success-img {
+  border-radius: 1.5rem;
+}
+@keyframes rainbow {
+  0% { color: #f46e6e; }
+  17% { color: orange; }
+  33% { color: yellow; }
+  50% { color: #82ff82; }
+  67% { color: #9090ff; }
+  83% { color: #ff92a2; }
+  100% { color: violet; }
+}
+
+.rainbow-text{
+  animation: rainbow 6s infinite;
+}
+
+
+@keyframes rainbow2 {
+  0% { color: #f9913c; }
+  50% { color: #ffffff; }
+  100% { color: #f9913c; }
+}
+
+.rainbow-text2{
+  animation: rainbow2 6s infinite;
+}
+
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
