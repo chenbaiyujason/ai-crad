@@ -15,9 +15,11 @@ export default function Home() {
   const [uploadImg, setUploadImg] = useState("");
   const [resultText, setResultText] = useState("");
   const [resultImg, setResultImg] = useState("");
+  const [errorText, setErrorText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isShowSnapshot, setIsShowSnapshot] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
+  const [isErrorShow, setIsErrorShow] = useState(false);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -118,7 +120,11 @@ export default function Home() {
         if (!resp.ok) {
           //TODO
           reset();
-          alert("出错了，请重试");
+          if (resp.status === 500) {
+            setErrorText("用的人太多，欠费了，请稍后重试");
+          } else {
+            setErrorText("出错了，请重试");
+          }
           return;
         }
 
@@ -133,13 +139,14 @@ export default function Home() {
       })
       .catch((err) => {
         reset();
-        alert("出错了，请重试");
+        setErrorText("出错了，请重试");
       });
   };
 
   const reset = () => {
     setResultText("");
     setResultImg("");
+    setSnapshotImg("");
     setIsResultShow(false);
     setIsLoading(false);
     setIsShowSnapshot(false);
@@ -158,7 +165,7 @@ export default function Home() {
     fr.onloadend = () => {
       if (fr.result) {
         setUploadImg(fr.result as string);
-        setIsLoading(true)
+        setIsLoading(true);
         img.onload = () => {
           drawOnCanvas(img, img.width, img.height);
           img.onload = null;
@@ -166,6 +173,14 @@ export default function Home() {
       }
     };
     fr.readAsDataURL(file);
+  };
+
+  const showError = (newErrorText: string, showTime = 1500) => {
+    setErrorText(newErrorText);
+    setIsErrorShow(true);
+    setTimeout(() => {
+      setIsErrorShow(false);
+    }, showTime);
   };
 
   return (
@@ -247,12 +262,17 @@ export default function Home() {
       {isResultShow ? (
         <div className="flex h-full w-full flex-col items-center justify-center z-20 mask absolute">
           <img src={resultImg} className="max-w-80 max-h-80"></img>
-          <div className="text-2xl pt-5 pb-10 break-all text-center px-8">
+          <div className="text-white text-2xl pt-5 pb-10 break-all text-center px-8">
             {resultText}
           </div>
           <button className="btn btn-blue inline-flex" onClick={reset}>
             下一张
           </button>
+        </div>
+      ) : null}
+      {isErrorShow ? (
+        <div className="flex h-full w-full flex-col items-center justify-center absolute z-20">
+          <div className="error-bg px-5 py-3">{errorText}</div>
         </div>
       ) : null}
     </main>

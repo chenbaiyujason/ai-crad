@@ -26,3 +26,7 @@
 .file-input {
   display: none;
 }
+
+.error-bg {
+  @apply bg-red-400 text-white rounded-lg
+}
