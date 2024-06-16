@@ -34,13 +34,19 @@ export default function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    if (snapshotImg === "") {
+      return;
+    }
+    fetchResult();
+  }, [snapshotImg]);
+
   const submit = async () => {
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     snapshot();
-    fetchResult();
   };
 
   const snapshot = () => {
@@ -87,7 +93,7 @@ export default function Home() {
     }, 3000);
     */
 
-    const url = "/api/create"; //TODO
+    const url = "/create"; //TODO
 
     const data = {
       base_64: snapshotImg,
@@ -178,7 +184,9 @@ export default function Home() {
       {isResultShow ? (
         <div className="flex h-full w-full flex-col items-center justify-center z-20 mask absolute">
           <img src={resultImg} className="max-w-80 max-h-80"></img>
-          <div className="text-2xl pt-5 pb-10">{resultText}</div>
+          <div className="text-2xl pt-5 pb-10 break-all text-center px-8">
+            {resultText}
+          </div>
           <button className="btn btn-blue inline-flex" onClick={() => reset()}>
             下一张
           </button>
