@@ -149,9 +149,9 @@ export default function Home() {
           //TODO
           reset();
           if (resp.status === 500) {
-            setErrorText("用的人太多，欠费了，请稍后重试");
+            showError("用的人太多，欠费了，请稍后重试");
           } else {
-            setErrorText("出错了，请重试");
+            showError("出错了，请重试");
           }
           return;
         }
@@ -168,7 +168,7 @@ export default function Home() {
       })
       .catch((err) => {
         reset();
-        setErrorText("出错了，请重试");
+        showError("出错了，请重试");
       });
   };
 
@@ -198,6 +198,7 @@ export default function Home() {
         img.onload = () => {
           drawOnCanvas(img, img.width, img.height);
           img.onload = null;
+          setUploadImg("");
         };
       }
     };
