@@ -3,7 +3,7 @@ const rewrites = () => {
   return [
     {
       source: "/api/create",
-      destination: "https://pixelcard-alpha.up.railway.app/create",
+      destination: "https://pc.baojiaoza.fun/create",
     },
   ];
 };
