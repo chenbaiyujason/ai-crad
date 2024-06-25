@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import localFont from "next/font/local";
 import "./page.css";
 const myFont = localFont({ src: "./fusion-pixel.ttf" });
+import ReactGA from "react-ga4";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -21,6 +22,13 @@ export default function Home() {
   const [isResultShow, setIsResultShow] = useState(false);
   const [isErrorShow, setIsErrorShow] = useState(false);
   const [showTipImg, setShowTipImg] = useState(false);
+
+  const gaTracker = (action: string) => {
+    ReactGA.event({
+      category: "AI-Card",
+      action,
+    });
+  };
 
   const handleShowTipImg = () => {
     console.log(123);
@@ -185,6 +193,15 @@ export default function Home() {
     }
   };
 
+  const captureOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    gaTracker("拍摄");
+    onUploadChange(event);
+  };
+  const uploadOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    gaTracker("上传");
+    onUploadChange(event);
+  };
+
   const onUploadChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
       return;
@@ -288,7 +305,7 @@ export default function Home() {
               accept="image/*"
               className="file-input"
               multiple={false}
-              onChange={onUploadChange}
+              onChange={captureOnChange}
               capture="environment"
               disabled={isLoading}
             ></input>
@@ -310,7 +327,7 @@ export default function Home() {
               accept="image/*"
               className="file-input"
               multiple={false}
-              onChange={onUploadChange}
+              onChange={uploadOnChange}
               disabled={isLoading}
             ></input>
           </div>
