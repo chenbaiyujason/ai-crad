@@ -31,11 +31,12 @@ export default function Home() {
   };
 
   const handleShowTipImg = () => {
-    console.log(123);
+    gaTracker('ShowTipImg')
     setShowTipImg(true);
   };
 
   const handleHideTipImg = () => {
+    gaTracker('HideTipImg')
     setShowTipImg(false);
   };
   useEffect(() => {
@@ -155,6 +156,7 @@ export default function Home() {
       .then(async (resp) => {
         if (!resp.ok) {
           //TODO
+          gaTracker(`fetchResultError=${resp.status}`)
           reset();
           if (resp.status === 500) {
             showError("用的人太多，欠费了，请稍后重试");
@@ -164,6 +166,7 @@ export default function Home() {
           return;
         }
 
+        gaTracker(`fetchResultSuccess`)
         const res = await resp.json();
 
         // TODO: 拿到结果并显示
@@ -192,6 +195,11 @@ export default function Home() {
       uploadImgInputRef.current.value = "";
     }
   };
+
+  const nextOnClick = () => {
+    gaTracker("下一张");
+    reset();
+  }
 
   const captureOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     gaTracker("拍摄");
@@ -347,7 +355,7 @@ export default function Home() {
           <div className="text-white text-2xl pt-5 pb-10 break-all text-center px-8 success-text">
             <div dangerouslySetInnerHTML={{ __html: resultText }} />
           </div>
-          <button className="btn btn-blue inline-flex" onClick={reset}>
+          <button className="btn btn-blue inline-flex" onClick={nextOnClick}>
             下一张
           </button>
         </div>
